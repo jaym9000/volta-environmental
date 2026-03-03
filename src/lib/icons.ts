@@ -1,0 +1,31 @@
+import {
+  CalendarCheck,
+  Leaf,
+  ShieldCheck,
+  DollarSign,
+  MapPin,
+  Award,
+  ClipboardList,
+  CalendarDays,
+  Home,
+  Clock,
+  TreePine,
+  Heart,
+  Briefcase,
+} from "lucide-react";
+
+export const iconMap: Record<string, React.ComponentType<{ size?: number; className?: string }>> = {
+  CalendarCheck,
+  Leaf,
+  ShieldCheck,
+  DollarSign,
+  MapPin,
+  Award,
+  ClipboardList,
+  CalendarDays,
+  Home,
+  Clock,
+  TreePine,
+  Heart,
+  Briefcase,
+};
