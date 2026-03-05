@@ -4,7 +4,7 @@ export const COMPANY = {
   motto: "Powering Clean Environments",
   domain: "voltaenvironmental.ca",
   serviceArea: "New Brunswick, Canada",
-  phone: "(506) XXX-XXXX",
+  phone: "(506) 721-6376",
   email: "voltaenvironmental@gmail.com",
   hours: "Monday - Saturday, 8:00 AM - 6:00 PM",
   address: "New Brunswick, Canada",
