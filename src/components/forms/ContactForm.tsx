@@ -6,6 +6,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
 import { Send, CheckCircle } from "lucide-react";
 import Button from "@/components/ui/Button";
+import { FORM_ENDPOINT } from "@/lib/constants";
 
 const formSchema = z.object({
   name: z.string().min(2, "Name must be at least 2 characters"),
@@ -32,14 +33,13 @@ export default function ContactForm() {
   const onSubmit = async (data: FormData) => {
     setSubmitting(true);
     try {
-      const response = await fetch("https://formspree.io/f/xplaceholder", {
+      await fetch(FORM_ENDPOINT, {
         method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(data),
+        mode: "no-cors",
+        headers: { "Content-Type": "text/plain" },
+        body: JSON.stringify({ ...data, formType: "contact" }),
       });
-      if (response.ok) {
-        setSubmitted(true);
-      }
+      setSubmitted(true);
     } catch {
       alert("Something went wrong. Please try again or call us directly.");
     } finally {

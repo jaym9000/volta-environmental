@@ -1,6 +1,6 @@
 import Link from "next/link";
 import Image from "next/image";
-import { Phone, Mail, MapPin, Clock, Facebook, Instagram } from "lucide-react";
+import { Phone, Mail, MapPin, Clock, Facebook, Instagram, Youtube } from "lucide-react";
 import { COMPANY, NAV_LINKS } from "@/lib/constants";
 
 export default function Footer() {
@@ -37,6 +37,13 @@ export default function Footer() {
                 className="text-volta-gray-400 hover:text-white transition-colors"
               >
                 <Instagram size={22} />
+              </a>
+              <a
+                href={COMPANY.social.youtube}
+                aria-label="YouTube"
+                className="text-volta-gray-400 hover:text-white transition-colors"
+              >
+                <Youtube size={22} />
               </a>
             </div>
           </div>

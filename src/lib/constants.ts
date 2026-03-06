@@ -9,10 +9,14 @@ export const COMPANY = {
   hours: "Monday - Saturday, 8:00 AM - 6:00 PM",
   address: "New Brunswick, Canada",
   social: {
-    facebook: "#",
-    instagram: "#",
+    facebook: "https://www.facebook.com/share/18EH6QFMtZ/",
+    instagram: "https://www.instagram.com/voltaenvironmental",
+    youtube: "https://youtube.com/@voltaenvironmental",
   },
 } as const;
+
+export const FORM_ENDPOINT =
+  "https://script.google.com/macros/s/AKfycbw6cLvWwmf2njjmMsFO8j11HiKD5R6oRwcTqz-eoHcfCnem-Zb_LID9yWyemuPg1FzE/exec";
 
 export const NAV_LINKS = [
   { label: "Home", href: "/" },

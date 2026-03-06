@@ -4,7 +4,7 @@ import { useState, useEffect } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import { Menu, X } from "lucide-react";
-import { NAV_LINKS } from "@/lib/constants";
+import { NAV_LINKS, COMPANY } from "@/lib/constants";
 
 export default function Navbar() {
   const [isOpen, setIsOpen] = useState(false);
@@ -25,7 +25,7 @@ export default function Navbar() {
       }`}
     >
       <nav className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-        <div className="flex h-28 items-center justify-between">
+        <div className="flex h-20 items-center justify-between">
           {/* Logo */}
           <Link href="/" className="flex items-center gap-2">
             <Image
@@ -33,9 +33,12 @@ export default function Navbar() {
               alt="Volta Environmental Services"
               width={1087}
               height={880}
-              className="h-24 w-auto sm:h-28"
+              className="h-14 w-auto sm:h-16"
               priority
             />
+            <span className="font-heading font-bold text-xl sm:text-2xl text-volta-black">
+              {COMPANY.shortName}
+            </span>
           </Link>
 
           {/* Desktop Nav */}
