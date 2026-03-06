@@ -42,6 +42,7 @@ export default function QuoteForm() {
     formState: { errors },
   } = useForm<FormData>({
     resolver: zodResolver(formSchema),
+    mode: "onTouched",
   });
 
   const serviceType = watch("serviceType");
