@@ -19,8 +19,8 @@ const plusJakarta = Plus_Jakarta_Sans({
 
 export const metadata: Metadata = {
   title: {
-    default: "Volta Environmental Services | Pet Waste Removal New Brunswick",
-    template: "%s | Volta Environmental Services",
+    default: "Volta | Pet Waste Removal New Brunswick",
+    template: "%s | Volta",
   },
   description:
     "Professional pet waste removal & yard cleanup in New Brunswick. Weekly, bi-weekly & monthly plans starting at $25. Eco-friendly, reliable service. Get a free quote today!",

@@ -26,6 +26,8 @@ export default function Footer() {
             <div className="flex gap-4 mt-6">
               <a
                 href={COMPANY.social.facebook}
+                target="_blank"
+                rel="noopener noreferrer"
                 aria-label="Facebook"
                 className="text-volta-gray-400 hover:text-white transition-colors"
               >
@@ -33,6 +35,8 @@ export default function Footer() {
               </a>
               <a
                 href={COMPANY.social.instagram}
+                target="_blank"
+                rel="noopener noreferrer"
                 aria-label="Instagram"
                 className="text-volta-gray-400 hover:text-white transition-colors"
               >
@@ -40,6 +44,8 @@ export default function Footer() {
               </a>
               <a
                 href={COMPANY.social.youtube}
+                target="_blank"
+                rel="noopener noreferrer"
                 aria-label="YouTube"
                 className="text-volta-gray-400 hover:text-white transition-colors"
               >
