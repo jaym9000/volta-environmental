@@ -36,8 +36,8 @@ export default function Navbar() {
               className="h-14 w-auto sm:h-16"
               priority
             />
-            <span className="font-heading font-bold text-xl sm:text-2xl text-volta-black">
-              {COMPANY.shortName}
+            <span className="font-heading font-bold text-base sm:text-lg text-volta-black leading-tight">
+              {COMPANY.name}
             </span>
           </Link>
 
