@@ -12,8 +12,12 @@ const formSchema = z.object({
   name: z.string().min(2, "Name must be at least 2 characters"),
   email: z.string().email("Please enter a valid email address"),
   phone: z.string().optional(),
-  subject: z.string().min(1, "Please select a subject"),
-  message: z.string().min(10, "Message must be at least 10 characters"),
+  serviceType: z.string().min(1, "Please select a service"),
+  numberOfDogs: z.string().optional(),
+  frequency: z.string().optional(),
+  propertySize: z.string().optional(),
+  postalCode: z.string().optional(),
+  message: z.string().optional(),
 });
 
 type FormData = z.infer<typeof formSchema>;
@@ -25,10 +29,13 @@ export default function ContactForm() {
   const {
     register,
     handleSubmit,
+    watch,
     formState: { errors },
   } = useForm<FormData>({
     resolver: zodResolver(formSchema),
   });
+
+  const serviceType = watch("serviceType");
 
   const onSubmit = async (data: FormData) => {
     setSubmitting(true);
@@ -109,32 +116,79 @@ export default function ContactForm() {
           />
         </div>
         <div>
-          <label className={labelClasses}>Subject *</label>
-          <select {...register("subject")} className={inputClasses}>
-            <option value="">Select a subject...</option>
-            <option value="general">General Inquiry</option>
-            <option value="quote">Request a Quote</option>
-            <option value="service">Service Question</option>
-            <option value="feedback">Feedback</option>
-            <option value="other">Other</option>
+          <label className={labelClasses}>Service Type *</label>
+          <select {...register("serviceType")} className={inputClasses}>
+            <option value="">Select a service...</option>
+            <option value="residential">Residential Pet Waste Removal</option>
+            <option value="commercial">Commercial Property Cleanup</option>
+            <option value="one-time">One-Time Deep Cleanup</option>
+            <option value="junk-removal">Light Junk Removal</option>
           </select>
-          {errors.subject && (
-            <p className={errorClasses}>{errors.subject.message}</p>
+          {errors.serviceType && (
+            <p className={errorClasses}>{errors.serviceType.message}</p>
           )}
         </div>
       </div>
 
+      {/* Conditional: Residential / One-Time Fields */}
+      {(serviceType === "residential" || serviceType === "one-time") && (
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+          <div>
+            <label className={labelClasses}>Number of Dogs</label>
+            <select {...register("numberOfDogs")} className={inputClasses}>
+              <option value="">Select...</option>
+              <option value="1-2">1–2 Dogs</option>
+              <option value="3-4">3–4 Dogs</option>
+              <option value="5+">5+ Dogs</option>
+            </select>
+          </div>
+          {serviceType === "residential" && (
+            <div>
+              <label className={labelClasses}>Preferred Frequency</label>
+              <select {...register("frequency")} className={inputClasses}>
+                <option value="">Select...</option>
+                <option value="weekly">Weekly</option>
+                <option value="bi-weekly">Bi-Weekly</option>
+                <option value="monthly">Monthly</option>
+              </select>
+            </div>
+          )}
+        </div>
+      )}
+
+      {/* Conditional: Commercial Fields */}
+      {serviceType === "commercial" && (
+        <div>
+          <label className={labelClasses}>Property Size</label>
+          <select {...register("propertySize")} className={inputClasses}>
+            <option value="">Select...</option>
+            <option value="small">Small (1–10 units)</option>
+            <option value="medium">Medium (10–20 units)</option>
+            <option value="large">Large (20–35 units)</option>
+            <option value="custom">Custom (35+ units)</option>
+          </select>
+        </div>
+      )}
+
+      {/* Postal Code */}
       <div>
-        <label className={labelClasses}>Message *</label>
+        <label className={labelClasses}>Postal Code</label>
+        <input
+          {...register("postalCode")}
+          className={inputClasses}
+          placeholder="E2L"
+        />
+      </div>
+
+      {/* Additional Details */}
+      <div>
+        <label className={labelClasses}>Additional Details</label>
         <textarea
           {...register("message")}
           className={`${inputClasses} resize-none`}
-          rows={5}
-          placeholder="How can we help you?"
+          rows={4}
+          placeholder="Any special requirements, yard details, etc. (optional)"
         />
-        {errors.message && (
-          <p className={errorClasses}>{errors.message.message}</p>
-        )}
       </div>
 
       <Button type="submit" size="lg" className="w-full">

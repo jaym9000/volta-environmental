@@ -17,7 +17,7 @@ const formSchema = z.object({
   numberOfDogs: z.string().optional(),
   frequency: z.string().optional(),
   propertySize: z.string().optional(),
-  postalCode: z.string().min(3, "Please enter your postal code"),
+  postalCode: z.string().optional(),
   notes: z.string().optional(),
 });
 
@@ -189,11 +189,11 @@ export default function QuoteForm() {
 
           {/* Postal Code */}
           <div>
-            <label className={labelClasses}>Postal Code *</label>
+            <label className={labelClasses}>Postal Code</label>
             <input
               {...register("postalCode")}
               className={inputClasses}
-              placeholder="E2L 1A1"
+              placeholder="E2L"
             />
             {errors.postalCode && (
               <p className={errorClasses}>{errors.postalCode.message}</p>
