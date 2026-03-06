@@ -7,6 +7,7 @@ import { z } from "zod";
 import { Send, CheckCircle } from "lucide-react";
 import Button from "@/components/ui/Button";
 import { FORM_ENDPOINT } from "@/lib/constants";
+import { provinces } from "@/lib/canadianLocations";
 
 const formSchema = z.object({
   name: z.string().min(2, "Name must be at least 2 characters"),
@@ -21,11 +22,14 @@ const formSchema = z.object({
   numberOfDogs: z.string().optional(),
   frequency: z.string().optional(),
   propertySize: z.string().optional(),
+  address: z.string().optional(),
+  province: z.string().optional(),
+  city: z.string().optional(),
   postalCode: z
     .string()
     .optional()
-    .refine((val) => !val || /^[A-Za-z]\d[A-Za-z]/.test(val), {
-      message: "Please enter a valid postal code (e.g. E2L)",
+    .refine((val) => !val || /^[A-Za-z]\d[A-Za-z]\s?\d[A-Za-z]\d$/.test(val), {
+      message: "Please enter a valid postal code (e.g. E2L 4Z3)",
     }),
   message: z.string().optional(),
 });
@@ -40,6 +44,7 @@ export default function ContactForm() {
     register,
     handleSubmit,
     watch,
+    setValue,
     formState: { errors },
   } = useForm<FormData>({
     resolver: zodResolver(formSchema),
@@ -47,6 +52,18 @@ export default function ContactForm() {
   });
 
   const serviceType = watch("serviceType");
+  const selectedProvince = watch("province");
+
+  const selectedProvinceCities =
+    provinces.find((p) => p.value === selectedProvince)?.cities ?? [];
+
+  const formatPostalCode = (value: string) => {
+    const cleaned = value.replace(/\s/g, "").toUpperCase();
+    if (cleaned.length > 3) {
+      return cleaned.slice(0, 3) + " " + cleaned.slice(3, 6);
+    }
+    return cleaned;
+  };
 
   const onSubmit = async (data: FormData) => {
     setSubmitting(true);
@@ -188,14 +205,77 @@ export default function ContactForm() {
         </div>
       )}
 
+      {/* Address */}
+      <div>
+        <label className={labelClasses}>Street Address</label>
+        <input
+          {...register("address")}
+          className={errors.address ? inputError : inputNormal}
+          placeholder="123 Main Street"
+        />
+        {errors.address && (
+          <p className={errorClasses}>{errors.address.message}</p>
+        )}
+      </div>
+
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+        {/* Province */}
+        <div>
+          <label className={labelClasses}>Province</label>
+          <select
+            {...register("province", {
+              onChange: () => setValue("city", ""),
+            })}
+            className={errors.province ? inputError : inputNormal}
+          >
+            <option value="">Select a province...</option>
+            {provinces.map((p) => (
+              <option key={p.value} value={p.value}>
+                {p.label}
+              </option>
+            ))}
+          </select>
+          {errors.province && (
+            <p className={errorClasses}>{errors.province.message}</p>
+          )}
+        </div>
+
+        {/* City */}
+        <div>
+          <label className={labelClasses}>City</label>
+          <select
+            {...register("city")}
+            className={errors.city ? inputError : inputNormal}
+            disabled={!selectedProvince}
+          >
+            <option value="">
+              {selectedProvince ? "Select a city..." : "Select a province first"}
+            </option>
+            {selectedProvinceCities.map((city) => (
+              <option key={city} value={city}>
+                {city}
+              </option>
+            ))}
+          </select>
+          {errors.city && (
+            <p className={errorClasses}>{errors.city.message}</p>
+          )}
+        </div>
+      </div>
+
       {/* Postal Code */}
       <div>
-        <label className={labelClasses}>Postal Code (first 3 characters)</label>
+        <label className={labelClasses}>Postal Code</label>
         <input
-          {...register("postalCode")}
+          {...register("postalCode", {
+            onChange: (e) => {
+              const formatted = formatPostalCode(e.target.value);
+              setValue("postalCode", formatted, { shouldValidate: false });
+            },
+          })}
           className={errors.postalCode ? inputError : inputNormal}
-          maxLength={3}
-          placeholder="E2L"
+          maxLength={7}
+          placeholder="E2L 4Z3"
         />
         {errors.postalCode && (
           <p className={errorClasses}>{errors.postalCode.message}</p>
