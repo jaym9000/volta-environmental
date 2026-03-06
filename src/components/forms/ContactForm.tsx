@@ -11,12 +11,22 @@ import { FORM_ENDPOINT } from "@/lib/constants";
 const formSchema = z.object({
   name: z.string().min(2, "Name must be at least 2 characters"),
   email: z.string().email("Please enter a valid email address"),
-  phone: z.string().optional(),
+  phone: z
+    .string()
+    .optional()
+    .refine((val) => !val || /^[\d\s()+-]{7,}$/.test(val), {
+      message: "Please enter a valid phone number",
+    }),
   serviceType: z.string().min(1, "Please select a service"),
   numberOfDogs: z.string().optional(),
   frequency: z.string().optional(),
   propertySize: z.string().optional(),
-  postalCode: z.string().optional(),
+  postalCode: z
+    .string()
+    .optional()
+    .refine((val) => !val || /^[A-Za-z]\d[A-Za-z]/.test(val), {
+      message: "Please enter a valid postal code (e.g. E2L)",
+    }),
   message: z.string().optional(),
 });
 
@@ -69,8 +79,12 @@ export default function ContactForm() {
     );
   }
 
-  const inputClasses =
-    "w-full px-4 py-3 rounded-lg border border-volta-gray-200 focus:border-volta-blue focus:ring-2 focus:ring-volta-blue/20 outline-none transition-all text-volta-black placeholder:text-volta-gray-400";
+  const inputBase =
+    "w-full px-4 py-3 rounded-lg border outline-none transition-all text-volta-black placeholder:text-volta-gray-400";
+  const inputNormal =
+    `${inputBase} border-volta-gray-200 focus:border-volta-blue focus:ring-2 focus:ring-volta-blue/20`;
+  const inputError =
+    `${inputBase} border-red-500 focus:border-red-500 focus:ring-2 focus:ring-red-500/20`;
   const labelClasses = "block text-sm font-semibold text-volta-gray-600 mb-1.5";
   const errorClasses = "text-red-500 text-xs mt-1";
 
@@ -84,7 +98,7 @@ export default function ContactForm() {
           <label className={labelClasses}>Full Name *</label>
           <input
             {...register("name")}
-            className={inputClasses}
+            className={errors.name ? inputError : inputNormal}
             placeholder="John Smith"
           />
           {errors.name && (
@@ -96,7 +110,7 @@ export default function ContactForm() {
           <input
             {...register("email")}
             type="email"
-            className={inputClasses}
+            className={errors.email ? inputError : inputNormal}
             placeholder="john@example.com"
           />
           {errors.email && (
@@ -111,13 +125,16 @@ export default function ContactForm() {
           <input
             {...register("phone")}
             type="tel"
-            className={inputClasses}
-            placeholder="(506) 555-0123"
+            className={errors.phone ? inputError : inputNormal}
+            placeholder="(555) 555-5555"
           />
+          {errors.phone && (
+            <p className={errorClasses}>{errors.phone.message}</p>
+          )}
         </div>
         <div>
           <label className={labelClasses}>Service Type *</label>
-          <select {...register("serviceType")} className={inputClasses}>
+          <select {...register("serviceType")} className={errors.serviceType ? inputError : inputNormal}>
             <option value="">Select a service...</option>
             <option value="residential">Residential Pet Waste Removal</option>
             <option value="commercial">Commercial Property Cleanup</option>
@@ -135,7 +152,7 @@ export default function ContactForm() {
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
           <div>
             <label className={labelClasses}>Number of Dogs</label>
-            <select {...register("numberOfDogs")} className={inputClasses}>
+            <select {...register("numberOfDogs")} className={inputNormal}>
               <option value="">Select...</option>
               <option value="1-2">1–2 Dogs</option>
               <option value="3-4">3–4 Dogs</option>
@@ -145,7 +162,7 @@ export default function ContactForm() {
           {serviceType === "residential" && (
             <div>
               <label className={labelClasses}>Preferred Frequency</label>
-              <select {...register("frequency")} className={inputClasses}>
+              <select {...register("frequency")} className={inputNormal}>
                 <option value="">Select...</option>
                 <option value="weekly">Weekly</option>
                 <option value="bi-weekly">Bi-Weekly</option>
@@ -160,7 +177,7 @@ export default function ContactForm() {
       {serviceType === "commercial" && (
         <div>
           <label className={labelClasses}>Property Size</label>
-          <select {...register("propertySize")} className={inputClasses}>
+          <select {...register("propertySize")} className={inputNormal}>
             <option value="">Select...</option>
             <option value="small">Small (1–10 units)</option>
             <option value="medium">Medium (10–20 units)</option>
@@ -172,12 +189,16 @@ export default function ContactForm() {
 
       {/* Postal Code */}
       <div>
-        <label className={labelClasses}>Postal Code</label>
+        <label className={labelClasses}>Postal Code (first 3 characters)</label>
         <input
           {...register("postalCode")}
-          className={inputClasses}
+          className={errors.postalCode ? inputError : inputNormal}
+          maxLength={3}
           placeholder="E2L"
         />
+        {errors.postalCode && (
+          <p className={errorClasses}>{errors.postalCode.message}</p>
+        )}
       </div>
 
       {/* Additional Details */}
@@ -185,7 +206,7 @@ export default function ContactForm() {
         <label className={labelClasses}>Additional Details</label>
         <textarea
           {...register("message")}
-          className={`${inputClasses} resize-none`}
+          className={`${inputNormal} resize-none`}
           rows={4}
           placeholder="Any special requirements, yard details, etc. (optional)"
         />
