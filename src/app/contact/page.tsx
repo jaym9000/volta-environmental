@@ -35,7 +35,7 @@ export default function ContactPage() {
             {/* Form */}
             <div className="lg:col-span-3">
               <h2 className="font-heading text-2xl font-bold text-volta-black mb-6">
-                Send Us a Message
+                Request a Free Quote
               </h2>
               <ContactForm />
             </div>
