@@ -163,7 +163,7 @@ export const VALUES = [
 
 export const TESTIMONIALS = [
   {
-    name: "Sarah M.",
+    name: "Jessica L.",
     location: "NB, Canada",
     rating: 5,
     text: "Volta has been amazing! My yard has never been cleaner and the kids can finally play outside without me worrying. Highly recommend their weekly service!",

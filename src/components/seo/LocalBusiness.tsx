@@ -27,9 +27,7 @@ export default function LocalBusinessSchema() {
       opens: "08:00",
       closes: "18:00",
     },
-    sameAs: [COMPANY.social.facebook, COMPANY.social.instagram].filter(
-      (url) => url !== "#"
-    ),
+    sameAs: [COMPANY.social.facebook, COMPANY.social.instagram, COMPANY.social.youtube],
   };
 
   return (
