@@ -16,7 +16,7 @@ export const COMPANY = {
 } as const;
 
 export const FORM_ENDPOINT =
-  "https://script.google.com/macros/s/AKfycbw6cLvWwmf2njjmMsFO8j11HiKD5R6oRwcTqz-eoHcfCnem-Zb_LID9yWyemuPg1FzE/exec";
+  "https://script.google.com/macros/s/AKfycbzMxY15if3VkM83VeRG82r4KsxafuoHb041Bu0Hx64bHdpYB7wg5b83LAvuUK2RJPlU8g/exec";
 
 export const NAV_LINKS = [
   { label: "Home", href: "/" },
